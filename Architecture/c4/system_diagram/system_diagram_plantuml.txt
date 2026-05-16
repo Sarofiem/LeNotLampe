@@ -1,0 +1,10 @@
+@startuml c4 test
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(lmpusr, "LeLampe User", "A user of LeLampe, in the same room as it")
+System(lmp, "LeLampe", "Friendly intelligent robotic lamp")
+
+Rel(lmpusr, lmp, "Interacts with, asks questions to, orders")
+Rel(lmp,lmpusr,"responds to, gives data")
+@enduml
+
