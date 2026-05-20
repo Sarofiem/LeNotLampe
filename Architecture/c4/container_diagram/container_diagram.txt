@@ -1,0 +1,36 @@
+@startuml c4 test
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container Diagram, LeNotLampe
+
+Person(lmpusr, "LeLampe User", "A user of LeLampe, in the same room as it")
+
+System_Boundary(lmp, "LeLampe", "Friendly intelligent robotic lamp"){
+ 
+ Container(in,"Input Hardware","Boop Button, Potentiometer, microphone")
+ Container(cv,"CV/Perception","cv model and others that Perceive the real world, user emotion, etc. and figures out proper action to take, emotion to emulate, etc.")
+ Container(bev,"Behavior Engine","translates textual command to matching, safe movement")
+ Container(data,"Database","holds Data taken from conversations, perception")
+ Container(llm,"LLM/Conversation","generates textual/audible replies to user")
+ Container(late,"Latency Tracker","keeps track of end-to-end latency")
+ Container(out, "Output Hardware","speakers, motor, screen, motorcontroller")
+}
+
+System_Ext(room,"Objects, Room", "room of user and everything in it")
+
+System(met,"Metrics", "collects and analyzes Lelamp's Metrics")
+
+Rel(cv,in,"takes input data from")
+Rel(cv,data,"sends interpreted data")
+
+Rel(lmpusr,in,"interacts with")
+Rel(cv,lmpusr,"observes, listens to")
+
+Rel(lmp,lmpusr,"responds to, gives data, observes")
+
+Rel(lmpusr,room,"interacts with")
+Rel(lmp,room,"observes")
+Rel(met,lmp,"observes latency")
+
+@enduml
+

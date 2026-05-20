@@ -1,10 +1,19 @@
 @startuml c4 test
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
+title System Context Diagram, LeNotLampe
+
 Person(lmpusr, "LeLampe User", "A user of LeLampe, in the same room as it")
 System(lmp, "LeLampe", "Friendly intelligent robotic lamp")
+System_Ext(room,"Objects, Room", "room of user and everything in it")
+
+System(met,"Metrics", "collects and analyzes Lelamp's Metrics")
 
 Rel(lmpusr, lmp, "Interacts with, asks questions to, orders")
-Rel(lmp,lmpusr,"responds to, gives data")
-@enduml
+Rel(lmp,lmpusr,"responds to, gives data, observes")
 
+Rel(lmpusr,room,"interacts with")
+Rel(lmp,room,"observes")
+Rel(met,lmp,"observes latency")
+
+@enduml
