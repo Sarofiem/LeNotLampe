@@ -20,17 +20,19 @@ System_Ext(room,"Objects, Room", "room of user and everything in it")
 
 System(met,"Metrics", "collects and analyzes Lelamp's Metrics")
 
-Rel(cv,in,"takes input data from")
-Rel(cv,data,"sends interpreted data")
+Rel(in,cv,"takes input data from")
+Rel(cv,data,"read, write")
+Rel(llm,data,"read, write")
+
 
 Rel(lmpusr,in,"interacts with")
 Rel(cv,lmpusr,"observes, listens to")
+Rel(cv,room, "observes")
 
 Rel(lmp,lmpusr,"responds to, gives data, observes")
 
 Rel(lmpusr,room,"interacts with")
-Rel(lmp,room,"observes")
+
 Rel(met,lmp,"observes latency")
 
 @enduml
-
