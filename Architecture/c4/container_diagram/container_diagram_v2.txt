@@ -1,0 +1,51 @@
+@startuml
+!include <C4/C4_Container>
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram - LeNotLampe
+
+Person(user, "LeLampe User", "A user in the same room")
+System_Ext(room, "Objects / Room", "The physical environment around the lamp")
+System_Ext(metrics, "Metrics Platform", "Collects and analyzes LeLampe metrics")
+
+System_Boundary(lenotlampe, "LeNotLampe") {
+
+    Container(input, "Input Hardware", "Boot button, potentiometer, microphone", "Captures user and environment input")
+
+    Container(perception, "Perception Engine", "CV / audio / emotion models", "Understands the user, room, objects, and emotional context")
+
+    Container(planner, "Behavior Planner", "Rules / policy / orchestration", "Chooses safe responses and physical behavior")
+
+    Container(conversation, "LLM / Conversation", "LLM", "Determines proper actions to take, emotions to emulate, Generates text/audible replies")
+
+    Container(output, "Output Hardware", "Speaker, motor, screen, motor controller", "Speaks and performs physical actions")
+
+    ContainerDb(database, "Database", "Database", "Stores conversation and perception history")
+
+    Container(latency, "Latency Tracker", "Observability", "Tracks end-to-end latency")
+}
+
+Rel_D(user, input, "Interacts with")
+Rel_R(room, input, "Observed by")
+Rel_D(input, perception, "Sends sensor data")
+Rel_D(perception, planner, "Sends context")
+Rel_R(perception, conversation, "Sends conversation context")
+Rel_L(conversation, planner, "Suggests body language")
+Rel_D(planner, output, "Sends safe commands")
+Rel_U(output, user, "Responds to")
+Rel_L(output, room, "Acts on environment")
+
+Rel_D(conversation, database, "Reads/writes")
+Rel_D(perception, database, "Stores observations")
+Rel_R(latency, metrics, "Reports latency")
+
+Lay_D(input, perception)
+Lay_D(perception, planner)
+Lay_D(planner, output)
+Lay_R(perception, conversation)
+Lay_D(conversation, database)
+Lay_R(metrics, latency)
+
+@enduml
