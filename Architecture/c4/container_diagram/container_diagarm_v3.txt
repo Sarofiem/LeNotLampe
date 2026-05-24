@@ -34,18 +34,20 @@ Rel_D(perception, planner, "Sends context")
 Rel_R(perception, conversation, "Sends conversation context")
 Rel_L(conversation, planner, "Suggests body language")
 Rel_D(planner, output, "Sends safe commands")
-Rel_U(output, user, "Responds to")
+Rel_U(output, user, "Responds to, interacts with")
 Rel_L(output, room, "Acts on environment")
 
-Rel_D(conversation, database, "Reads/writes")
-Rel_D(perception, database, "Stores observations")
-Rel_R(latency, metrics, "Reports latency")
+Rel_U(conversation, database, "Reads/writes")
+Rel_R(perception, database, "Stores observations")
+Rel_R(metrics, latency, "documents latency")
+
+Rel(conversation,output,"sends verbal response")
 
 Lay_D(input, perception)
 Lay_D(perception, planner)
 Lay_D(planner, output)
 Lay_R(perception, conversation)
-Lay_D(conversation, database)
 Lay_R(metrics, latency)
 
 @enduml
+
