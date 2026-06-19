@@ -1,0 +1,64 @@
+@startuml
+!include <C4/C4_Container>
+
+LAYOUT_TOP_DOWN()
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram - LeNotLampe
+
+Person(user, "LeLampe User", "A user in the same room")
+System_Ext(room, "Objects / Room", "The physical environment around the lamp")
+System_Ext(metrics, "Metrics Platform", "Collects and analyzes LeNotLampe metrics")
+
+System_Boundary(lenotlampe, "LeNotLampe") {
+
+    Container(input, "Input Hardware", "Boot button, potentiometer, microphone", "Captures user and environment input")
+
+    Container(perception, "Perception Engine", "CV / audio / emotion models", "Understands the user, room, objects, and emotional context")
+
+    Container(conversation, "LLM / Conversation", "LLM / dialogue planner", "Determines conversational intent, emotions to emulate, and text/audible replies")
+
+    Container(planner, "Behavior Manager", "Context / validation / orchestration", "decides LeNotLampe's physical body language")
+
+    Container(expression, "Expression Planner", "Articulation / timing planner", "Translates intended behavior into chains of articulated movement")
+
+    Container(trans, "Output Translator", "Hardware communication", "sends output signals to controllers")
+
+    Container(output, "Output Hardware", "Speaker, motor, screen, motor controller", "Speaks and performs physical actions")
+
+    ContainerDb(database, "Database", "Database", "Stores conversation and perception history")
+
+    Container(latency, "Latency Tracker", "Observability", "Tracks end-to-end latency")
+}
+
+Rel_D(user, input, "Interacts with")
+Rel_R(room, input, "Observed by")
+Rel_D(input, perception, "Sends sensor data")
+
+Rel_D(perception, planner, "Sends world and user context")
+Rel_R(perception, conversation, "Sends conversation context")
+
+Rel_L(conversation, planner, "Suggests body language")
+Rel_D(planner, expression, "Requests physical expression")
+Rel_D(expression, trans, "Sends safe movement plan")
+Rel_U(planner,database, "reads skill tree, writes behaviour")
+Rel_D(trans, output, "Sends commands, retrieves status/errors ")
+
+Rel_U(output, user, "Responds to, interacts with")
+Rel_L(output, room, "Acts on environment")
+
+Rel_U(conversation, database, "Reads/writes conversation state")
+Rel(perception, database, "reads/writes observation state")
+Rel_U(metrics, latency, "Documents latency")
+
+Rel(conversation, output, "Sends verbal response")
+
+Lay_D(input, perception)
+Lay_D(perception, planner)
+Lay_D(planner, expression)
+Lay_D(expression, trans)
+Lay_D(trans, output)
+Lay_R(perception, conversation)
+Lay_L(output,latency)
+
+@enduml
