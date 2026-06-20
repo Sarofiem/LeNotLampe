@@ -1,0 +1,40 @@
+@startuml
+
+title Sequence Diagram - User Interaction with LeNotLampe
+
+actor User
+participant "Input Hardware" as Input
+participant "Perception Engine" as Perception
+participant "LLM / Conversation" as Conversation
+participant "Behavior Manager" as Behavior
+participant "Expression Planner" as Expression
+participant "Output Translator" as Translator
+participant "Output Hardware" as Output
+database "Database" as DB
+participant "Latency Tracker" as Latency
+
+User -> Input: Speaks / interacts
+Input -> Perception: Sends sensor data
+
+Perception -> DB: reads/writes observation state
+Perception -> Conversation: Sends conversation context
+Perception -> Behavior: Sends world and user context
+
+Conversation -> DB: Reads/writes conversation state
+Conversation -> Behavior: Suggests body language
+Conversation -> Output: Sends verbal response
+
+Behavior -> DB: reads skill tree, writes behaviour
+Behavior -> Expression: Requests physical expression
+
+Expression -> Translator: Sends safe movement plan
+Translator -> Output: Sends commands, retrieves status/errors
+Translator -> Perception: reports feedback
+
+Output -> User: Responds to, interacts with
+Output -> Latency: Reports output timing
+Perception -> Latency: Reports perception timing
+Conversation -> Latency: Reports LLM timing
+Behavior -> Latency: Reports behavior timing
+
+@enduml
