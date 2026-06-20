@@ -51,13 +51,14 @@ Rel_U(conversation, database, "Reads/writes conversation state")
 Rel(perception, database, "reads/writes observation state")
 Rel_U(metrics, latency, "Documents latency")
 
-Rel(conversation, output, "Sends verbal response")
+Rel(conversation, trans, "Sends verbal response")
+
+Rel(trans,perception,"sends feedback data")
 
 Lay_D(input, perception)
 Lay_D(perception, planner)
 Lay_D(planner, expression)
 Lay_D(expression, trans)
-Lay_D(trans, output)
 Lay_R(perception, conversation)
 Lay_L(output,latency)
 
